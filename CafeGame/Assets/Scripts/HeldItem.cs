@@ -19,7 +19,7 @@ public class HeldItem : MonoBehaviour
         if (picked_up)
         {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            position.z = 0;
+            position.z = transform.position.z;
             transform.position = position;
         }
     }

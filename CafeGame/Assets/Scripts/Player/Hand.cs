@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,8 +16,8 @@ enum HitType
 public class Hand : MonoBehaviour
 {
     PlayerControls controls;
-    
-    private SpriteRenderer sr = null;
+
+    private TextMeshPro text;
 
     private HitType hit = HitType.None;
     private RaycastHit2D raycast_hit;
@@ -26,10 +27,7 @@ public class Hand : MonoBehaviour
     
     HeldItem held_item = null;
 
-    
-    public Texture2D cursorTexture;
-    public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
+    private float start_z;
     
     private void Awake()
     {
@@ -51,8 +49,9 @@ public class Hand : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sr = GetComponentInChildren<SpriteRenderer>();
-        sr.color = new Color(96, 141, 192);
+        text = GetComponentInChildren<TextMeshPro>();
+        text.text = "";
+        start_z = transform.position.z;
     }
 
     // Update is called once per frame
@@ -60,7 +59,7 @@ public class Hand : MonoBehaviour
     {
         // position = cursor position
         Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        position.z = 0;
+        position.z = start_z;
         transform.position = position;
         
         raycast_hit = Physics2D.Raycast(transform.position, Vector2.zero);
@@ -68,11 +67,11 @@ public class Hand : MonoBehaviour
         {
             if (raycast_hit.transform.CompareTag("Interactive"))
             {
-                sr.color = Color.green;
+                text.text = "Interactive";
                 hit = HitType.Interactive;
             } else if (raycast_hit.transform.CompareTag("Pickable"))
             {
-                sr.color = Color.yellow;
+                text.text = "Pickable";
                 hit = HitType.Pickable;
             }
             else
@@ -82,7 +81,7 @@ public class Hand : MonoBehaviour
         }
         else
         {
-            sr.color = new Color(96, 141, 192);
+            text.text = "";
             hit = HitType.None;
         }
     }
