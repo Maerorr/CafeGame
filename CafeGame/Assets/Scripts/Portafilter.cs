@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -25,6 +26,19 @@ public class Portafilter : HeldItem
         ground_coffee = null;
         text = GetComponentInChildren<TextMeshPro>();
     }
+    
+    void Update()
+    {
+        base.Update();
+        if (ground_coffee is null)
+        {
+            text.text = "";
+        }
+        else
+        {
+            text.text = String.Format("{0}, {1}g",ground_coffee.GetCoffeeData().name, ground_coffee.GetWeight());
+        }
+    }
 
     public bool IsEmpty()
     {
@@ -36,7 +50,6 @@ public class Portafilter : HeldItem
     {
         if (!IsEmpty()) return false;
         ground_coffee = coffee;
-        text.text = string.Format("{0}, {1}g",ground_coffee.GetCoffeeData().name, ground_coffee.GetWeight());
         return true;
     }
     

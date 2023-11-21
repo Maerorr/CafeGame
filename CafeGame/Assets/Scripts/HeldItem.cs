@@ -14,7 +14,7 @@ public class HeldItem : MonoBehaviour
         collider = GetComponentInChildren<Collider2D>();
     }
     
-    private void Update()
+    public void Update()
     {
         if (picked_up)
         {

@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class InteractionInput : MonoBehaviour
 {
     [SerializeField] 
-    private bool can_interact;
+    private bool can_interact = true;
     
     [SerializeField]
     private bool single_use;
