@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ScriptableObjects;
 using UnityEngine;
 
-public class GroundCoffee : MonoBehaviour
+public class GroundCoffee
 {
     CoffeeData coffee_data;
 
@@ -11,17 +11,15 @@ public class GroundCoffee : MonoBehaviour
     private float weight;
     private bool is_used;
     
-    void Start()
+    public GroundCoffee(CoffeeData coffee_data, float grind_size, float weight)
     {
-        grind_size = 0;
-        weight = 0;
+        this.coffee_data = coffee_data;
+        this.grind_size = grind_size;
+        this.weight = weight;
         is_used = false;
     }
     
-    void Update()
-    {
-        
-    }
+    
     
     public float GetGrindSize()
     {

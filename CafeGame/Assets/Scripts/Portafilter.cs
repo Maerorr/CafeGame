@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public struct GroundsData
@@ -12,46 +13,46 @@ public struct GroundsData
     public float best_temperature;
 }
 
-public class Portafilter : MonoBehaviour
+public class Portafilter : HeldItem
 {
     GroundCoffee ground_coffee;
+
+    private TextMeshPro text;
     
     void Start()
     {
+        base.Start();
         ground_coffee = null;
-    }
-    
-    void Update()
-    {
-        // nothing
+        text = GetComponentInChildren<TextMeshPro>();
     }
 
-    bool IsEmpty()
+    public bool IsEmpty()
     {
         if (ground_coffee is null) return true;
         return false;
     }
 
-    bool FillWithGrounds(GroundCoffee coffee)
+    public bool FillWithGrounds(GroundCoffee coffee)
     {
         if (!IsEmpty()) return false;
         ground_coffee = coffee;
+        text.text = string.Format("{0}, {1}g",ground_coffee.GetCoffeeData().name, ground_coffee.GetWeight());
         return true;
     }
     
-    bool EmptyIntoTrash()
+    public bool EmptyIntoTrash()
     {
         if (IsEmpty()) return false;
         ground_coffee = null;
         return true;
     }
 
-    bool GroundsUsed()
+    public bool GroundsUsed()
     {
         return ground_coffee.IsUsed();
     }
     
-    GroundsData GetGroundsData()
+    public GroundsData GetGroundsData()
     {
         var grounds_best_settings = ground_coffee.GetCoffeeData();
         GroundsData grounds_data = new GroundsData();
