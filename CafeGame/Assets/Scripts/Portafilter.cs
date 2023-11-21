@@ -23,7 +23,7 @@ public class Portafilter : MonoBehaviour
     
     void Update()
     {
-        
+        // nothing
     }
 
     bool IsEmpty()
