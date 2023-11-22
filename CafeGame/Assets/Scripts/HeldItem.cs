@@ -19,14 +19,9 @@ public class HeldItem : MonoBehaviour
     {
         if (picked_up)
         {
-            Debug.Log("picked up");
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             position.z = transform.position.z;
             transform.position = position;
-        }
-        else
-        {
-            Debug.Log("NOT picked up");
         }
     }
 
