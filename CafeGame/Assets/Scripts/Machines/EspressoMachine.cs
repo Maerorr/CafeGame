@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class EspressoMachine : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class EspressoMachine : MonoBehaviour
     [SerializeField]
     private Transform cup_snap_point;
 
-    void SnapFilter(HeldItem item)
+    public void SnapFilter(HeldItem item)
     {
         if (item is null) return;
         // try to cast item to Portafiler class
@@ -19,7 +20,6 @@ public class EspressoMachine : MonoBehaviour
         if (portafilter.IsEmpty()) return;
         if (portafilter.GroundsUsed()) return;
         
-        portafilter.transform.position = filter_snap_point.position;
-        
+        portafilter.SnapTo(filter_snap_point);
     }
 }

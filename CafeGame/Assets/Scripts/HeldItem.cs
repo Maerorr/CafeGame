@@ -6,6 +6,7 @@ using UnityEngine;
 public class HeldItem : MonoBehaviour
 {
     bool picked_up = false;
+    private bool snapped = false;
     
     Collider2D collider;
 
@@ -18,9 +19,14 @@ public class HeldItem : MonoBehaviour
     {
         if (picked_up)
         {
+            Debug.Log("picked up");
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             position.z = transform.position.z;
             transform.position = position;
+        }
+        else
+        {
+            Debug.Log("NOT picked up");
         }
     }
 
@@ -37,5 +43,27 @@ public class HeldItem : MonoBehaviour
         picked_up = false;
         collider.enabled = true;
         // todo: turn possible physics on
+    }
+
+    public void SnapTo(Transform t)
+    {
+        picked_up = false;
+        collider.enabled = false;
+        snapped = true;
+        
+        // snap positions but ignore z
+        Vector3 position = t.position;
+        position.z = transform.position.z;
+        transform.position = position;
+    }
+    
+    public bool IsPickedUp()
+    {
+        return picked_up;
+    }
+    
+    public bool IsSnapped()
+    {
+        return snapped;
     }
 }

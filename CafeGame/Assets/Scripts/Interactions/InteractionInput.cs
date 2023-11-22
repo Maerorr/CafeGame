@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class InteractionInput : MonoBehaviour
 {
@@ -31,9 +27,6 @@ public class InteractionInput : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (interaction_type == InteractionType.Toggle)
-        {
-        }
     }
 
     public bool Interact(HeldItem item)

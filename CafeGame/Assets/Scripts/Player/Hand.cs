@@ -120,13 +120,25 @@ public class Hand : MonoBehaviour
                 }
                 break;
             case HitType.Pickable:
-                
                 if (hand_empty)
                 {
                     held_item = raycast_hit.transform.GetComponentInParent<HeldItem>();
                     
                     held_item.PickUp();
                     hand_empty = false;
+                }
+                break;
+            case HitType.Placeable:
+                if (!hand_empty)
+                {
+                    hit_interaction_input = raycast_hit.transform.GetComponentInParent<InteractionInput>();
+                    
+                    hit_interaction_input.Interact(held_item);
+                    // this being false means that the item cannot be snapped for a reason.
+                    if (held_item.IsSnapped())
+                    {
+                        DropHeldItem();
+                    }
                 }
                 break;
         }
@@ -136,9 +148,15 @@ public class Hand : MonoBehaviour
     {
         if (!hand_empty)
         {
-            held_item.Drop();
-            hand_empty = true;
-            held_item = null;
+            DropHeldItem();
         }
+    }
+
+    void DropHeldItem()
+    {
+        Debug.Log("Dropping item");
+        held_item.Drop();
+        hand_empty = true;
+        held_item = null;
     }
 }
