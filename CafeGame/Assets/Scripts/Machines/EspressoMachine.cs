@@ -14,28 +14,74 @@ public class EspressoMachine : MonoBehaviour
     [SerializeField] 
     private TextMeshPro error_text;
     
-    Portafilter filter = null;
+    private Portafilter filter = null;
+    private Cup cup = null;
 
-    public void SnapFilter(HeldItem item)
+    static int debug_counter = 0;
+    
+    public void SnapOrUnsnapFilter(HeldItem item)
     {
-        if (item is null) return;
-        // try to cast item to Portafiler class
-        Portafilter portafilter = item as Portafilter;
-        if (portafilter is null) return;
-        // check if portafilter is empty
-        if (portafilter.IsEmpty())
+        //DisplayErrorText("Pressed SnapOrUnsnapFilter");
+        switch (filter)
         {
-            DisplayErrorText("Portafilter is empty!");
-            return;
+            case null:
+                if (item is null)
+                {
+                    DisplayErrorText("Item Null!");
+                    return;
+                }
+                Portafilter portafilter = item as Portafilter;
+        
+                if (portafilter is null)
+                {
+                    DisplayErrorText("Portafilter Null!");
+                    return;
+                }
+                // check if portafilter is empty
+                if (portafilter.IsEmpty())
+                {
+                    DisplayErrorText("Portafilter is empty!");
+                    return;
+                }
+                if (portafilter.GroundsUsed())
+                {
+                    DisplayErrorText("Grounds have been already used!");
+                    return;
+                }
+                portafilter.SnapTo(filter_snap_point);
+                filter = portafilter;
+                break;
+            default:
+                filter.Unsnap();
+                PlayerManager.Instance.GetPlayerHand().AssignHeldItem(filter);
+                filter = null;
+                break;
         }
-        if (portafilter.GroundsUsed())
-        {
-            DisplayErrorText("Grounds have been already used!");
-            return;
+        debug_counter++;
+    }
+
+    public void SnapOrUnsnapCup(HeldItem item)
+    {
+        switch (cup) {
+            case null:
+                if (item is null) return;
+                Cup cast_cup = item as Cup;
+                if (cast_cup is null) return;
+                if (cup != null)
+                {
+                    DisplayErrorText("Cup is already in place!");
+                    return;
+                }
+                cast_cup.SnapTo(cup_snap_point);
+                cup = cast_cup;
+                break;
+            default:
+                cup.Unsnap();
+                PlayerManager.Instance.GetPlayerHand().AssignHeldItem(cup);
+                cup = null;
+                break;
         }
         
-        portafilter.SnapTo(filter_snap_point);
-        filter = portafilter;
     }
     
     public void DisplayErrorText(string text)
@@ -47,18 +93,20 @@ public class EspressoMachine : MonoBehaviour
     {
         error_text.text = text;
         yield return new WaitForSeconds(1);
-        while (true)
+        var i = 0;
+        while (error_text.color.a >= 0)
         {
             // fade alpha to 0
-            error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, error_text.color.a - 0.1f);
+            error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, error_text.color.a - 0.01f);
             if (error_text.color.a <= 0)
             {
                 error_text.text = "";
                 error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, 1);
                 break;
             }
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.01f);
         }
-        
+        error_text.text = "";
+        error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, 1);
     }
 }

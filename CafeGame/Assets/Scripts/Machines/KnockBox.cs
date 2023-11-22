@@ -12,7 +12,6 @@ public class KnockBox : MonoBehaviour
         if (portafilter is null) return;
         // check if portafilter is empty
         if (portafilter.IsEmpty()) return;
-        Debug.Log("Knocking coffee out of portafilter");
         portafilter.EmptyIntoTrash();
     }
 }

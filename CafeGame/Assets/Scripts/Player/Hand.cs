@@ -38,8 +38,8 @@ public class Hand : MonoBehaviour
     private void OnEnable()
     {
         controls.Enable();
-        controls.Player.LeftClick.performed += ctx => OnLeftClick();
-        controls.Player.RightClick.performed += ctx => OnRightClick();
+        //controls.Player.LeftClick.performed += ctx => { Debug.Log(ctx); OnLeftClick(); };
+        //controls.Player.RightClick.performed += ctx => { OnRightClick(); };
     }
     
     private void OnDisable()
@@ -129,16 +129,20 @@ public class Hand : MonoBehaviour
                 }
                 break;
             case HitType.Placeable:
+                hit_interaction_input = raycast_hit.transform.GetComponentInParent<InteractionInput>();
                 if (!hand_empty)
                 {
-                    hit_interaction_input = raycast_hit.transform.GetComponentInParent<InteractionInput>();
-                    
                     hit_interaction_input.Interact(held_item);
                     // this being false means that the item cannot be snapped for a reason.
                     if (held_item.IsSnapped())
                     {
                         DropHeldItem();
                     }
+                }
+                else
+                {
+                    // can pick up the item
+                    hit_interaction_input.Interact(held_item);
                 }
                 break;
         }
@@ -154,9 +158,15 @@ public class Hand : MonoBehaviour
 
     void DropHeldItem()
     {
-        Debug.Log("Dropping item");
         held_item.Drop();
         hand_empty = true;
         held_item = null;
+    }
+    
+    public void AssignHeldItem(HeldItem item)
+    {
+        held_item = item;
+        held_item.PickUp();
+        hand_empty = false;
     }
 }

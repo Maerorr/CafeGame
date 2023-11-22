@@ -36,7 +36,16 @@ public class HeldItem : MonoBehaviour
     public void Drop()
     {
         picked_up = false;
-        collider.enabled = true;
+        if (snapped)
+        {
+            // if it was previously snapped, don't enable collider
+            collider.enabled = false;
+        }
+        else
+        {
+            collider.enabled = true; 
+        }
+        
         // todo: turn possible physics on
     }
 
@@ -50,6 +59,12 @@ public class HeldItem : MonoBehaviour
         Vector3 position = t.position;
         position.z = transform.position.z;
         transform.position = position;
+    }
+    
+    public void Unsnap()
+    {
+        snapped = false;
+        collider.enabled = true;
     }
     
     public bool IsPickedUp()
