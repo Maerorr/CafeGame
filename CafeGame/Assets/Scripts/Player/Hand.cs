@@ -10,7 +10,8 @@ enum HitType
 {
     None,
     Interactive,
-    Pickable
+    Pickable,
+    Placeable,
 }
 
 public class Hand : MonoBehaviour
@@ -65,25 +66,42 @@ public class Hand : MonoBehaviour
         raycast_hit = Physics2D.Raycast(transform.position, Vector2.zero);
         if (raycast_hit.collider != null)
         {
-            if (raycast_hit.transform.CompareTag("Interactive"))
+            var tags = raycast_hit.transform.GetComponent<CustomTags>();
+            if (tags is not null)
             {
-                text.text = "Interactive";
-                hit = HitType.Interactive;
-            } else if (raycast_hit.transform.CompareTag("Pickable"))
-            {
-                text.text = "Pickable";
-                hit = HitType.Pickable;
-            }
-            else
-            {
-                hit = HitType.None;
+                if (tags.Count() == 0)
+                {
+                    text.text = "";
+                    hit = HitType.None;
+                }
+                if (tags.Count() == 1)
+                {
+                    switch (tags.Get(0))
+                    {
+                        case Tags.Interactive:
+                            text.text = "interactive";
+                            hit = HitType.Interactive;
+                            break;
+                        case Tags.Pickable:
+                            text.text = "pickable";
+                            hit = HitType.Pickable;
+                            break;
+                        case Tags.Placeable:
+                            text.text = "placeable";
+                            hit = HitType.Placeable;
+                            break;
+                    }
+                }
+                // in the future multiple tag checks can be possible
+
+                // we checked the tags successfully, we can now return.
+                // if something went wrong, we won't get there and we will get no hit
+                return;
             }
         }
-        else
-        {
-            text.text = "";
-            hit = HitType.None;
-        }
+        
+        text.text = "";
+        hit = HitType.None;
     }
 
     void OnLeftClick()
