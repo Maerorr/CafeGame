@@ -785,7 +785,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 3.62}
+  m_AnchoredPosition: {x: 0.27, y: 3.62}
   m_SizeDelta: {x: 3.6, y: 0.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &578282666
@@ -2580,7 +2580,7 @@ MonoBehaviour:
   interaction_event:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1438059340}
+      - m_Target: {fileID: 1438059337}
         m_TargetAssemblyTypeName: CoffeeGrinder, Assembly-CSharp
         m_MethodName: GrindCoffee
         m_Mode: 0
@@ -3340,7 +3340,7 @@ Transform:
   m_GameObject: {fileID: 1924063464}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.543, z: 0.056305356}
+  m_LocalPosition: {x: -0.99, y: 0.493, z: 0.056305356}
   m_LocalScale: {x: 0.34593, y: 0.34593, z: 0.34593}
   m_ConstrainProportionsScale: 0
   m_Children: []
