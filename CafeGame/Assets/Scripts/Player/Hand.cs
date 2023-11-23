@@ -66,6 +66,7 @@ public class Hand : MonoBehaviour
         raycast_hit = Physics2D.Raycast(transform.position, Vector2.zero);
         if (raycast_hit.collider != null)
         {
+            Debug.Log(raycast_hit.transform.name);
             var tags = raycast_hit.transform.GetComponent<CustomTags>();
             if (tags is not null)
             {

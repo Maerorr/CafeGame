@@ -9,10 +9,18 @@ public class HeldItem : MonoBehaviour
     private bool snapped = false;
     
     Collider2D collider;
+    private Rigidbody2D rb;
+
+    [SerializeField] 
+    private bool uses_physics = false;
 
     public void Start()
     {
         collider = GetComponentInChildren<Collider2D>();
+        if (uses_physics)
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
     }
     
     public void Update()
@@ -22,6 +30,10 @@ public class HeldItem : MonoBehaviour
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             position.z = transform.position.z;
             transform.position = position;
+            if (uses_physics)
+            {
+                rb.velocity = Vector2.zero;
+            }
         }
     }
 
@@ -30,6 +42,11 @@ public class HeldItem : MonoBehaviour
         picked_up = true;
         // disable collider
         collider.enabled = false;
+        if (uses_physics)
+        {
+            transform.rotation = Quaternion.identity;
+            rb.angularVelocity = 0;
+        }
         // todo: turn possible physics off
     }
 
@@ -59,12 +76,23 @@ public class HeldItem : MonoBehaviour
         Vector3 position = t.position;
         position.z = transform.position.z;
         transform.position = position;
+        transform.rotation = t.rotation;
+        
+        if (uses_physics)
+        {
+            rb.bodyType = RigidbodyType2D.Static;
+        }
     }
     
     public void Unsnap()
     {
         snapped = false;
         collider.enabled = true;
+        
+        if (uses_physics)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
     }
     
     public bool IsPickedUp()
