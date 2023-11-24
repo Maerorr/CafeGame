@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEngine;
+using ScriptableObjects;
 
 public class Liquid
 {
@@ -17,9 +12,16 @@ public class Liquid
 
 public class Coffee : Liquid
 {
-    public Coffee(string name) : base("Coffee")
+    
+    CoffeeData coffee_data;
+    
+    // this will later determine the 'quality' of the coffee made
+    private float extraction;
+    
+    public Coffee(CoffeeData cd) : base("Coffee")
     {
-        
+        base.Name = cd.ToString();
+        coffee_data = cd;
     }
 }
 

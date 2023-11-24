@@ -19,8 +19,6 @@ public class GroundCoffee
         is_used = false;
     }
     
-    
-    
     public float GetGrindSize()
     {
         return grind_size;
