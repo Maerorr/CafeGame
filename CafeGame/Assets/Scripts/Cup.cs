@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Cup : HeldItem
 {
     private List<Liquid> liquids = new List<Liquid>();
     public float MaxCapacity { get; private set; } = 1000f;
+
+    private TextMeshPro text;
+    
     // Start is called before the first frame update
     void Start()
     {
         base.Start();
+        text = GetComponentInChildren<TextMeshPro>();
     }
 
     // Update is called once per frame
     void Update()
     {
         base.Update();
+        text.text = LiquidsToString();
     }
 
     public void AddLiquid(Liquid liquid, float amount)
@@ -25,12 +31,12 @@ public class Cup : HeldItem
             //Handle overflow
             return;
         }
-
-
+        
         if (HasLiquid(liquid.Name))
         {
             Liquid existingLiquid = liquids.Find(l => l.Name == liquid.Name);
             existingLiquid.Amount += amount;
+            
         }
         else
         {
@@ -38,6 +44,25 @@ public class Cup : HeldItem
             liquid.Amount = amount;
             liquids.Add(liquid);
         }
+    }
+
+    // this returns true if the liquid was added, false if liquid doesn't exist
+    public bool AddLiquid(string liquid_name, float amount)
+    {
+        if (GetTotalVolume() + amount > MaxCapacity)
+        {
+            //Handle overflow
+            return true;
+        }
+        
+        if (HasLiquid(liquid_name))
+        {
+            Liquid existingLiquid = liquids.Find(l => l.Name == liquid_name);
+            existingLiquid.Amount += amount;
+            return true;
+        }
+
+        return false;
     }
 
     public float GetTotalVolume()
@@ -63,5 +88,15 @@ public class Cup : HeldItem
     public void EmptyCup()
     {
         liquids.Clear();
+    }
+    
+    private string LiquidsToString()
+    {
+        string s = "";
+        foreach (Liquid liquid in liquids)
+        {
+            s += liquid.Name + ", " + liquid.Amount + "ml\n";
+        }
+        return s;
     }
 }

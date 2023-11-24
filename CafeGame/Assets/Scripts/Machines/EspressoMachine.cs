@@ -18,6 +18,9 @@ public class EspressoMachine : MonoBehaviour
     private Cup cup = null;
 
     static int debug_counter = 0;
+
+    private bool is_brewing = false;
+    private Coroutine brewing_coroutine;
     
     public void SnapOrUnsnapFilter(HeldItem item)
     {
@@ -109,4 +112,36 @@ public class EspressoMachine : MonoBehaviour
         error_text.text = "";
         error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, 1);
     }
+
+    IEnumerator PourCoffee()
+    {
+        while (true)
+        {
+            var grounds = filter.GetGroundsData();
+            var name = grounds.coffee_data.ToString();
+
+            if (!cup.AddLiquid(name, 0.5f))
+            {
+                Liquid coffee = new Coffee(grounds.coffee_data);
+                cup.AddLiquid(coffee, 0.5f);
+            }
+            yield return new WaitForSeconds(0.05f);
+        }
+        yield break;
+    }
+    
+    public void Brew(HeldItem i)
+    {
+        if (is_brewing)
+        {
+            StopCoroutine(brewing_coroutine);
+            is_brewing = false;
+        }
+        else
+        {
+            brewing_coroutine = StartCoroutine(PourCoffee());
+            is_brewing = true;
+        }
+    }
+
 }
