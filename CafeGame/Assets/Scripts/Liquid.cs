@@ -27,7 +27,14 @@ public class Coffee : Liquid
 
 public class Milk : Liquid
 {
-    public Milk(string name) : base("Milk")
+    public Milk() : base("Milk")
+    {
+    }
+}
+
+public class Water : Liquid
+{
+    public Water() : base("Water")
     {
     }
 }
