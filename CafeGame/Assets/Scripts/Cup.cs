@@ -80,6 +80,22 @@ public class Cup : HeldItem
         return liquids.Exists(liquid => liquid.Name == liquidName);
     }
 
+    public List<Liquid> GetLiquidsOfType(LiquidType type)
+    {
+        return liquids.FindAll(liquid => liquid.Type == type);
+    }
+    
+    public float GetAmountOfLiquidByType(LiquidType type)
+    {
+        float totalVolume = 0f;
+        var liquids = GetLiquidsOfType(type);
+        foreach (Liquid liquid in liquids)
+        {
+            totalVolume += liquid.Amount;
+        }
+        return totalVolume;
+    }
+
     public List<Liquid> GetLiquids()
     {
         return liquids;
