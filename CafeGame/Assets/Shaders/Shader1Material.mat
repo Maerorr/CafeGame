@@ -44,6 +44,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: a65ec68532842784a9128ac91350cb51, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _milk_texture:
+        m_Texture: {fileID: 2800000, guid: fedd36767b44606438225c05748acebc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -58,10 +62,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _angle_offset: 38.3
-    - _cell_dens: 56
+    - _angle_offset: 22.1
+    - _cell_dens: 37.4
+    - _coffee_percentage: 0
     - _fill_amount: 0.254
+    - _milk_percentage: 0
     - _speed: 0.08
-    - _strength: 0.04
+    - _strength: 0.024
+    - _water_percentage: 0
     m_Colors: []
   m_BuildTextureStacks: []
