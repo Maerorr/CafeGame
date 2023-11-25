@@ -14,7 +14,7 @@ public class HeldItem : MonoBehaviour
     [SerializeField] 
     private bool uses_physics = false;
 
-    public void Start()
+    public void Awake()
     {
         collider = GetComponentInChildren<Collider2D>();
         if (uses_physics)

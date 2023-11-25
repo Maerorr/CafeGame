@@ -66,7 +66,7 @@ public class Hand : MonoBehaviour
         raycast_hit = Physics2D.Raycast(transform.position, Vector2.zero);
         if (raycast_hit.collider != null)
         {
-            Debug.Log(raycast_hit.transform.name);
+            //Debug.Log(raycast_hit.transform.name);
             var tags = raycast_hit.transform.GetComponent<CustomTags>();
             if (tags is not null)
             {
@@ -93,6 +93,7 @@ public class Hand : MonoBehaviour
                             break;
                     }
                 }
+                //Debug.Log($"{raycast_hit.transform.name} has tag {hit}");
                 // in the future multiple tag checks can be possible
 
                 // we checked the tags successfully, we can now return.
@@ -113,10 +114,12 @@ public class Hand : MonoBehaviour
                 hit_interaction_input = raycast_hit.transform.GetComponentInParent<InteractionInput>();
                 if (hand_empty)
                 {
+                    //Debug.Log("Interacting without item");
                     hit_interaction_input.Interact(null);
                 }
                 else
                 {
+                    //Debug.Log("Interacting with item");
                     hit_interaction_input.Interact(held_item);
                 }
                 break;

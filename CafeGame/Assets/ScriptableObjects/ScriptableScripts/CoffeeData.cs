@@ -11,6 +11,12 @@ namespace ScriptableObjects
         public float best_grind_size;
         public float best_dose_weight;
         public float best_temperature;
+
+        public string ToString()
+        {
+            return $"{coffee_name}_{best_grind_size}_{best_dose_weight}_{best_temperature}";
+        }
     }
+    
 
 }

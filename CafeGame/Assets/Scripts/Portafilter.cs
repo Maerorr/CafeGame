@@ -1,17 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ScriptableObjects;
 using TMPro;
 using UnityEngine;
 
 public struct GroundsData
 {
+    public CoffeeData coffee_data;
+        
     public float grind_size;
     public float weight;
-    
-    public float best_grind_size;
-    public float best_dose_weight;
-    public float best_temperature;
 }
 
 public class Portafilter : HeldItem
@@ -20,9 +19,9 @@ public class Portafilter : HeldItem
 
     private TextMeshPro text;
     
-    void Start()
+    void Awake()
     {
-        base.Start();
+        base.Awake();
         ground_coffee = null;
         text = GetComponentInChildren<TextMeshPro>();
     }
@@ -71,9 +70,7 @@ public class Portafilter : HeldItem
         GroundsData grounds_data = new GroundsData();
         grounds_data.grind_size = ground_coffee.GetGrindSize();
         grounds_data.weight = ground_coffee.GetWeight();
-        grounds_data.best_grind_size = grounds_best_settings.best_grind_size;
-        grounds_data.best_dose_weight = grounds_best_settings.best_dose_weight;
-        grounds_data.best_temperature = grounds_best_settings.best_temperature;
+        grounds_data.coffee_data = ground_coffee.GetCoffeeData();
         return grounds_data;
     }
 }
