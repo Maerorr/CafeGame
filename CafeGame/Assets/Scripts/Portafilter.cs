@@ -19,9 +19,9 @@ public class Portafilter : HeldItem
 
     private TextMeshPro text;
     
-    void Start()
+    void Awake()
     {
-        base.Start();
+        base.Awake();
         ground_coffee = null;
         text = GetComponentInChildren<TextMeshPro>();
     }

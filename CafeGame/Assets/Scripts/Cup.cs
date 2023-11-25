@@ -11,9 +11,9 @@ public class Cup : HeldItem
     private TextMeshPro text;
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        base.Start();
+        base.Awake();
         text = GetComponentInChildren<TextMeshPro>();
     }
 
