@@ -17,6 +17,7 @@ public class EspressoMachine : MonoBehaviour
 
     [SerializeField] 
     private TextMeshPro error_text;
+    Coroutine error_text_coroutine;
     
     private Portafilter filter = null;
     private Cup cup = null;
@@ -152,7 +153,9 @@ public class EspressoMachine : MonoBehaviour
     
     public void DisplayErrorText(string text)
     {
-        StartCoroutine(ShowTextForSeconds(text));
+        if (error_text_coroutine != null)
+            StopCoroutine(error_text_coroutine);
+        error_text_coroutine = StartCoroutine(ShowTextForSeconds(text));
     }
     
     IEnumerator ShowTextForSeconds(string text)
