@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ScriptableObjects;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct GroundsData
@@ -29,9 +30,13 @@ public class Portafilter : HeldItem
         base.Awake();
         ground_coffee = null;
         text = GetComponentInChildren<TextMeshPro>();
+    }
+
+    private void Start()
+    {
         tamp_slider.HideSlider();
     }
-    
+
     new void Update()
     {
         base.Update();
