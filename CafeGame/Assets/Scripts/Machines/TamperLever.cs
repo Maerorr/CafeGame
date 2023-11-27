@@ -27,7 +27,8 @@ public class TamperLever : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Coroutine return_coroutine;
     
     [SerializeField]
-    UnityEvent<float> on_value_change = new UnityEvent<float>();
+    // (value, is_pulled)
+    UnityEvent<(float, bool)> on_value_change = new UnityEvent<(float, bool)>();
 
     private void Start()
     {
@@ -77,10 +78,9 @@ public class TamperLever : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 var move = new Vector3(0, Mathf.Clamp(y_diff / pull_speed_increase_window, -max_pull_speed, 0.0f) * Time.deltaTime, 0);
                 lever.position += move;
                 lever_handle.position += move;
-                // calculate value between 0 in default y and 1 in max pull y
-                var value = (lever_handle.position.y - default_handle_y) / (lever_pivot.position.y - default_handle_y);
-                on_value_change.Invoke(value);
             }
+            var value = (lever_handle.position.y - default_handle_y) / (lever_pivot.position.y - default_handle_y);
+            on_value_change.Invoke((value, true));
         
             yield return null;
         }
@@ -96,7 +96,7 @@ public class TamperLever : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             lever_handle.position += move;
             
             var value = (lever_handle.position.y - default_handle_y) / (lever_pivot.position.y - default_handle_y);
-            on_value_change.Invoke(value);
+            on_value_change.Invoke((value, false));
             
             if (lever.position.y >= default_lever_y)
             {

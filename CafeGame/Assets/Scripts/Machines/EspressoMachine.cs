@@ -160,6 +160,7 @@ public class EspressoMachine : MonoBehaviour
     
     IEnumerator ShowTextForSeconds(string text)
     {
+        error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, 1);
         error_text.text = text;
         yield return new WaitForSeconds(1);
         var i = 0;
@@ -223,8 +224,14 @@ public class EspressoMachine : MonoBehaviour
     
     public void Brew(HeldItem i)
     {
-        if (cup is null || filter is null)
+        if (cup is null)
         {
+            DisplayErrorText("No cup in place!");
+            return;
+        }
+        if (filter is null)
+        {
+            DisplayErrorText("No filter in place!");
             return;
         }
         if (is_brewing)

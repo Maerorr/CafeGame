@@ -19,6 +19,8 @@ public class Portafilter : HeldItem
 
     private TextMeshPro text;
     
+    private float tamp_strength = 0.0f;
+    
     private new void Awake()
     {
         base.Awake();
@@ -35,7 +37,7 @@ public class Portafilter : HeldItem
         }
         else
         {
-            text.text = String.Format("{0}, {1}g",ground_coffee.GetCoffeeData().name, ground_coffee.GetWeight());
+            text.text = $"{tamp_strength}";//String.Format("{0}, {1}g",ground_coffee.GetCoffeeData().name, ground_coffee.GetWeight());
         }
     }
 
@@ -55,6 +57,7 @@ public class Portafilter : HeldItem
     public bool EmptyIntoTrash()
     {
         if (IsEmpty()) return false;
+        tamp_strength = 0.0f;
         ground_coffee = null;
         return true;
     }
@@ -72,5 +75,11 @@ public class Portafilter : HeldItem
         grounds_data.weight = ground_coffee.GetWeight();
         grounds_data.coffee_data = ground_coffee.GetCoffeeData();
         return grounds_data;
+    }
+    
+    public void SetTampStrength(float strength)
+    {
+        if (strength < tamp_strength) return;
+        tamp_strength = strength;
     }
 }
