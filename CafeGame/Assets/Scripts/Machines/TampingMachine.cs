@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,12 +8,23 @@ public class TampingMachine : MonoBehaviour
 {
     [SerializeField]
     private Transform filter_snap_point;
+
+    [SerializeField] 
+    private Transform tamper;
+    private float default_tamper_y;
     
     private Portafilter filter;
     
     [SerializeField] 
     private TextMeshPro error_text;
     Coroutine error_text_coroutine;
+    
+    float tamping_status = 0;
+
+    private void Awake()
+    {
+        default_tamper_y = tamper.transform.position.y;
+    }
 
     public void SnapOrUnsnapFilter(HeldItem item)
     {
@@ -64,6 +76,7 @@ public class TampingMachine : MonoBehaviour
     
     IEnumerator ShowTextForSeconds(string text)
     {
+        error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, 1);
         error_text.text = text;
         yield return new WaitForSeconds(1);
         var i = 0;
@@ -81,5 +94,16 @@ public class TampingMachine : MonoBehaviour
         }
         error_text.text = "";
         error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, 1);
+    }
+    
+    public void SetTampingStatus(float value)
+    {
+        tamping_status = Mathf.Clamp(value, 0, 1);
+        
+        // move tamper between default position and filter snap point
+        var tamper_position = tamper.position;
+        var filter_snap_point_position = filter_snap_point.position;
+        var new_tamp_y = Mathf.Lerp(default_tamper_y, filter_snap_point_position.y, tamping_status);
+        tamper.position = new Vector3(tamper_position.x, new_tamp_y, tamper_position.z);
     }
 }

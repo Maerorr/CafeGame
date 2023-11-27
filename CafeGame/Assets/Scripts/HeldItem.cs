@@ -9,21 +9,23 @@ public class HeldItem : MonoBehaviour
     private bool snapped = false;
     
     Collider2D collider;
-    private Rigidbody2D rb;
+    
+    private Rigidbody2D rb = null;
+    
+    private bool uses_physics;
 
-    [SerializeField] 
-    private bool uses_physics = false;
-
-    public void Awake()
+    protected void Awake()
     {
         collider = GetComponentInChildren<Collider2D>();
-        if (uses_physics)
+        rb = GetComponent<Rigidbody2D>();
+        uses_physics = false;
+        if (rb != null)
         {
-            rb = GetComponent<Rigidbody2D>();
+            uses_physics = true;
         }
     }
     
-    public void Update()
+    protected void Update()
     {
         if (picked_up)
         {

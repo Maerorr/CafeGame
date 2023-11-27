@@ -19,14 +19,14 @@ public class Portafilter : HeldItem
 
     private TextMeshPro text;
     
-    void Awake()
+    private new void Awake()
     {
         base.Awake();
         ground_coffee = null;
         text = GetComponentInChildren<TextMeshPro>();
     }
     
-    void Update()
+    new void Update()
     {
         base.Update();
         if (ground_coffee is null)

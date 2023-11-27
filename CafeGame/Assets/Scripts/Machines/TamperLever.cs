@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class TamperLever : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -13,7 +14,9 @@ public class TamperLever : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     
     [SerializeField]
     private Transform lever_pivot;
-    
+
+    [SerializeField] 
+    private float pull_speed_increase_window = 2.0f;
     [SerializeField]
     private float max_pull_speed = 0.1f;
 
@@ -22,6 +25,9 @@ public class TamperLever : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     
     private Coroutine pull_coroutine;
     private Coroutine return_coroutine;
+    
+    [SerializeField]
+    UnityEvent<float> on_value_change = new UnityEvent<float>();
 
     private void Start()
     {
@@ -65,13 +71,15 @@ public class TamperLever : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             var handle_pos = lever_handle.position;
             var y_diff = mouse_world_pos.y - handle_pos.y;
             
-            Debug.Log($"{handle_pos.y}, {lever_pivot.position.y}");
             if (handle_pos.y >= lever_pivot.position.y)
             {
                 // move the lever and handle down
-                var move = new Vector3(0, Mathf.Clamp(y_diff, -max_pull_speed, 0.0f) * Time.deltaTime, 0);
+                var move = new Vector3(0, Mathf.Clamp(y_diff / pull_speed_increase_window, -max_pull_speed, 0.0f) * Time.deltaTime, 0);
                 lever.position += move;
                 lever_handle.position += move;
+                // calculate value between 0 in default y and 1 in max pull y
+                var value = (lever_handle.position.y - default_handle_y) / (lever_pivot.position.y - default_handle_y);
+                on_value_change.Invoke(value);
             }
         
             yield return null;
@@ -86,6 +94,9 @@ public class TamperLever : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             var move = new Vector3(0, max_pull_speed * Time.deltaTime, 0);
             lever.position += move;
             lever_handle.position += move;
+            
+            var value = (lever_handle.position.y - default_handle_y) / (lever_pivot.position.y - default_handle_y);
+            on_value_change.Invoke(value);
             
             if (lever.position.y >= default_lever_y)
             {
