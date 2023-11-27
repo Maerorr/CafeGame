@@ -21,11 +21,15 @@ public class Portafilter : HeldItem
     
     private float tamp_strength = 0.0f;
     
+    [SerializeField]
+    CustomSlider tamp_slider;
+    
     private new void Awake()
     {
         base.Awake();
         ground_coffee = null;
         text = GetComponentInChildren<TextMeshPro>();
+        tamp_slider.HideSlider();
     }
     
     new void Update()
@@ -37,7 +41,7 @@ public class Portafilter : HeldItem
         }
         else
         {
-            text.text = $"{tamp_strength}";//String.Format("{0}, {1}g",ground_coffee.GetCoffeeData().name, ground_coffee.GetWeight());
+            text.text = String.Format("{0}, {1}g",ground_coffee.GetCoffeeData().name, ground_coffee.GetWeight());
         }
     }
 
@@ -59,12 +63,19 @@ public class Portafilter : HeldItem
         if (IsEmpty()) return false;
         tamp_strength = 0.0f;
         ground_coffee = null;
+        tamp_slider.HideSlider();
         return true;
     }
 
     public bool GroundsUsed()
     {
         return ground_coffee.IsUsed();
+    }
+    
+    public bool IsTamped()
+    {
+        if (tamp_strength < 0.999f) return false;
+        return true;
     }
     
     public GroundsData GetGroundsData()
@@ -81,5 +92,22 @@ public class Portafilter : HeldItem
     {
         if (strength < tamp_strength) return;
         tamp_strength = strength;
+        tamp_slider.SetSliderValue(tamp_strength);
+        if (tamp_strength < 0.001f)
+        {
+            tamp_slider.HideSlider();
+            return;
+        }
+
+        tamp_slider.ShowSlider();
+        
+        if (tamp_strength < 1.0f)
+        {
+            tamp_slider.SetSliderColor(Color.red);
+        }
+        else
+        {
+            tamp_slider.SetSliderColor(Color.green);
+        }
     }
 }

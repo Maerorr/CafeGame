@@ -49,7 +49,6 @@ public class TampingMachine : MonoBehaviour
                     DisplayErrorText("Portafilter Null!");
                     return;
                 }
-                // check if portafilter is empty
                 if (portafilter.IsEmpty())
                 {
                     DisplayErrorText("Portafilter is empty!");
@@ -58,6 +57,11 @@ public class TampingMachine : MonoBehaviour
                 if (portafilter.GroundsUsed())
                 {
                     DisplayErrorText("Grounds have been already used!");
+                    return;
+                }
+                if (portafilter.IsTamped())
+                {
+                    DisplayErrorText("Grounds have been already tamped!");
                     return;
                 }
                 portafilter.SnapTo(filter_snap_point);
