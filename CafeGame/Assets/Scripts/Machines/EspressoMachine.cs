@@ -6,15 +6,139 @@ using UnityEngine.Rendering.Universal;
 
 public class EspressoMachine : MonoBehaviour
 {
-    [SerializeField]
-    private Transform filter_snap_point;
-    [SerializeField]
-    private Transform cup_snap_point;
-    [SerializeField]
-    private Transform water_snap_point;
-    [SerializeField]
-    private Transform milk_snap_point;
+    #region SnapPoints
 
+        [SerializeField]
+        private Transform filter_snap_point;
+        [SerializeField]
+        private Transform cup_snap_point;
+        [SerializeField]
+        private Transform water_snap_point;
+        [SerializeField]
+        private Transform milk_snap_point;
+
+        public void SnapOrUnsnapFilter(HeldItem item)
+        {
+            //DisplayErrorText("Pressed SnapOrUnsnapFilter");
+            if (is_brewing)
+            {
+                return;
+            }
+            
+            switch (filter)
+            {
+                case null:
+                    if (item is null)
+                    {
+                        DisplayErrorText("Item Null!");
+                        return;
+                    }
+                    Portafilter portafilter = item as Portafilter;
+            
+                    if (portafilter is null)
+                    {
+                        DisplayErrorText("Portafilter Null!");
+                        return;
+                    }
+                    // check if portafilter is empty
+                    if (portafilter.IsEmpty())
+                    {
+                        DisplayErrorText("Portafilter is empty!");
+                        return;
+                    }
+                    if (portafilter.GroundsUsed())
+                    {
+                        DisplayErrorText("Grounds have been already used!");
+                        return;
+                    }
+                    portafilter.SnapTo(filter_snap_point);
+                    filter = portafilter;
+                    break;
+                default:
+                    filter.Unsnap();
+                    PlayerManager.Instance.GetPlayerHand().AssignHeldItem(filter);
+                    filter = null;
+                    break;
+            }
+            debug_counter++;
+        }
+
+        public void SnapOrUnsnapCup(HeldItem item)
+        {
+            switch (cup) {
+                case null:
+                    if (item is null) return;
+                    Cup cast_cup = item as Cup;
+                    if (cast_cup is null) return;
+                    if (cup != null)
+                    {
+                        DisplayErrorText("Cup is already in place!");
+                        return;
+                    }
+                    cast_cup.SnapTo(cup_snap_point);
+                    cup = cast_cup;
+                    break;
+                default:
+                    cup.Unsnap();
+                    PlayerManager.Instance.GetPlayerHand().AssignHeldItem(cup);
+                    cup = null;
+                    break;
+            }
+            
+        }
+
+        public void SnapOrUnsnapCupWater(HeldItem item)
+        {
+            switch (cup) {
+                case null:
+                    if (item is null) return;
+                    Cup cast_cup = item as Cup;
+                    if (cast_cup is null) return;
+                    if (cup != null)
+                    {
+                        DisplayErrorText("Cup is already in place!");
+                        return;
+                    }
+                    cast_cup.SnapTo(water_snap_point);
+                    cup = cast_cup;
+                    break;
+                default:
+                    cup.Unsnap();
+                    PlayerManager.Instance.GetPlayerHand().AssignHeldItem(cup);
+                    cup = null;
+                    break;
+            }
+            
+        }
+
+        public void SnapOrUnsnapCupMilk(HeldItem item)
+        {
+            switch (cup) {
+                case null:
+                    if (item is null) return;
+                    Cup cast_cup = item as Cup;
+                    if (cast_cup is null) return;
+                    if (cup != null)
+                    {
+                        DisplayErrorText("Cup is already in place!");
+                        return;
+                    }
+                    cast_cup.SnapTo(milk_snap_point);
+                    cup = cast_cup;
+                    break;
+                default:
+                    cup.Unsnap();
+                    PlayerManager.Instance.GetPlayerHand().AssignHeldItem(cup);
+                    cup = null;
+                    break;
+            }
+            
+        }
+    #endregion
+    
+    [SerializeField]
+    PressureGauge pressure_gauge;
+    
     [SerializeField] 
     private TextMeshPro error_text;
     Coroutine error_text_coroutine;
@@ -24,132 +148,58 @@ public class EspressoMachine : MonoBehaviour
 
     static int debug_counter = 0;
 
-    private bool is_brewing = false;
-    private Coroutine brewing_coroutine;
+    #region Coroutines
 
-    private bool is_pouring_water = false;
-    private Coroutine pouring_water_coroutine;
+        private bool is_brewing = false;
+        private Coroutine brewing_coroutine;
 
-    private bool is_pouring_milk = false;
-    private Coroutine pouring_milk_coroutine;
+        private bool is_pouring_water = false;
+        private Coroutine pouring_water_coroutine;
+
+        private bool is_pouring_milk = false;
+        private Coroutine pouring_milk_coroutine;
+
+        IEnumerator PourCoffee(float per_tick_amount)
+        {
+            while (true)
+            {
+                var grounds = filter.GetGroundsData();
+                var name = grounds.coffee_data.ToString();
+
+                
+                cup.AddLiquid(name, per_tick_amount);
+
+                yield return new WaitForSeconds(0.01f);
+            }
+        }
+
+        IEnumerator PourWaterCoroutine()
+        {
+            while (true)
+            {
+                if (!cup.AddLiquid("Water", 0.5f))
+                {
+                    Liquid water = new Water();
+                    cup.AddLiquid(water, 0.5f);
+                }
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
+
+        IEnumerator PourMilkCoroutine()
+        {
+            while (true)
+            {
+                if (!cup.AddLiquid("Milk", 0.5f))
+                {
+                    Liquid milk = new Milk();
+                    cup.AddLiquid(milk, 0.5f);
+                }
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
     
-    public void SnapOrUnsnapFilter(HeldItem item)
-    {
-        //DisplayErrorText("Pressed SnapOrUnsnapFilter");
-        if (is_brewing)
-        {
-            return;
-        }
-        
-        switch (filter)
-        {
-            case null:
-                if (item is null)
-                {
-                    DisplayErrorText("Item Null!");
-                    return;
-                }
-                Portafilter portafilter = item as Portafilter;
-        
-                if (portafilter is null)
-                {
-                    DisplayErrorText("Portafilter Null!");
-                    return;
-                }
-                // check if portafilter is empty
-                if (portafilter.IsEmpty())
-                {
-                    DisplayErrorText("Portafilter is empty!");
-                    return;
-                }
-                if (portafilter.GroundsUsed())
-                {
-                    DisplayErrorText("Grounds have been already used!");
-                    return;
-                }
-                portafilter.SnapTo(filter_snap_point);
-                filter = portafilter;
-                break;
-            default:
-                filter.Unsnap();
-                PlayerManager.Instance.GetPlayerHand().AssignHeldItem(filter);
-                filter = null;
-                break;
-        }
-        debug_counter++;
-    }
-
-    public void SnapOrUnsnapCup(HeldItem item)
-    {
-        switch (cup) {
-            case null:
-                if (item is null) return;
-                Cup cast_cup = item as Cup;
-                if (cast_cup is null) return;
-                if (cup != null)
-                {
-                    DisplayErrorText("Cup is already in place!");
-                    return;
-                }
-                cast_cup.SnapTo(cup_snap_point);
-                cup = cast_cup;
-                break;
-            default:
-                cup.Unsnap();
-                PlayerManager.Instance.GetPlayerHand().AssignHeldItem(cup);
-                cup = null;
-                break;
-        }
-        
-    }
-
-    public void SnapOrUnsnapCupWater(HeldItem item)
-    {
-        switch (cup) {
-            case null:
-                if (item is null) return;
-                Cup cast_cup = item as Cup;
-                if (cast_cup is null) return;
-                if (cup != null)
-                {
-                    DisplayErrorText("Cup is already in place!");
-                    return;
-                }
-                cast_cup.SnapTo(water_snap_point);
-                cup = cast_cup;
-                break;
-            default:
-                cup.Unsnap();
-                PlayerManager.Instance.GetPlayerHand().AssignHeldItem(cup);
-                cup = null;
-                break;
-        }
-        
-    }
-
-    public void SnapOrUnsnapCupMilk(HeldItem item)
-    {
-        switch (cup) {
-            case null:
-                if (item is null) return;
-                Cup cast_cup = item as Cup;
-                if (cast_cup is null) return;
-                if (cup != null)
-                {
-                    DisplayErrorText("Cup is already in place!");
-                    return;
-                }
-                cast_cup.SnapTo(milk_snap_point);
-                cup = cast_cup;
-                break;
-            default:
-                cup.Unsnap();
-                PlayerManager.Instance.GetPlayerHand().AssignHeldItem(cup);
-                cup = null;
-                break;
-        }
-        
-    }
+    #endregion
     
     public void DisplayErrorText(string text)
     {
@@ -179,48 +229,6 @@ public class EspressoMachine : MonoBehaviour
         error_text.text = "";
         error_text.color = new Color(error_text.color.r, error_text.color.g, error_text.color.b, 1);
     }
-
-    IEnumerator PourCoffee()
-    {
-        while (true)
-        {
-            var grounds = filter.GetGroundsData();
-            var name = grounds.coffee_data.ToString();
-
-            if (!cup.AddLiquid(name, 0.5f))
-            {
-                Liquid coffee = new Coffee(grounds.coffee_data);
-                cup.AddLiquid(coffee, 0.5f);
-            }
-            yield return new WaitForSeconds(0.05f);
-        }
-    }
-
-    IEnumerator PourWaterCoroutine()
-    {
-        while (true)
-        {
-            if (!cup.AddLiquid("Water", 0.5f))
-            {
-                Liquid water = new Water();
-                cup.AddLiquid(water, 0.5f);
-            }
-            yield return new WaitForSeconds(0.05f);
-        }
-    }
-
-    IEnumerator PourMilkCoroutine()
-    {
-        while (true)
-        {
-            if (!cup.AddLiquid("Milk", 0.5f))
-            {
-                Liquid milk = new Milk();
-                cup.AddLiquid(milk, 0.5f);
-            }
-            yield return new WaitForSeconds(0.05f);
-        }
-    }
     
     public void Brew(HeldItem i)
     {
@@ -237,11 +245,25 @@ public class EspressoMachine : MonoBehaviour
         if (is_brewing)
         {
             StopCoroutine(brewing_coroutine);
+            pressure_gauge.SetValue(0.0f);
             is_brewing = false;
         }
         else
         {
-            brewing_coroutine = StartCoroutine(PourCoffee());
+            // add coffee to cup for the first time, not to check it later
+            var grounds = filter.GetGroundsData();
+            // TODO: `amount` value should be calculated based on pressure generated by the coffee grounds
+            var pressure = 1.2f; // meaning 'perfect' pressure, assuming 2 is the max value
+            var per_tick_amount = (2f - pressure) / 100f;
+            if (!cup.AddLiquid(name, 0.5f))
+            {
+                Liquid coffee = new Coffee(grounds.coffee_data);
+                cup.AddLiquid(coffee, 0.5f);
+            }
+            
+            pressure_gauge.SetValue(pressure / 2.0f);
+            
+            brewing_coroutine = StartCoroutine(PourCoffee(per_tick_amount));
             is_brewing = true;
         }
     }
