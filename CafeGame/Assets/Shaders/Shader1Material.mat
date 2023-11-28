@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _cup_mask:
-        m_Texture: {fileID: 2800000, guid: a65ec68532842784a9128ac91350cb51, type: 3}
+        m_Texture: {fileID: 2800000, guid: 306b92f48e5447e4887b43c89aa54941, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _milk_texture:
@@ -63,10 +63,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _angle_offset: 22.1
-    - _cell_dens: 37.4
+    - _cell_dens: 39
     - _coffee_percentage: 0
-    - _fill_amount: 0.254
-    - _milk_percentage: 0
+    - _fill_amount: 1
+    - _milk_percentage: 0.11
     - _speed: 0.08
     - _strength: 0.024
     - _water_percentage: 0
