@@ -115,4 +115,28 @@ public class Portafilter : HeldItem
             tamp_slider.SetSliderColor(Color.green);
         }
     }
+
+    public void AddTampStrength(float strength)
+    {
+        
+        tamp_strength += strength;
+        tamp_strength = Mathf.Clamp(tamp_strength, 0, 1);
+        tamp_slider.SetSliderValue(tamp_strength);
+        if (tamp_strength < 0.001f)
+        {
+            tamp_slider.HideSlider();
+            return;
+        }
+
+        tamp_slider.ShowSlider();
+        
+        if (tamp_strength < 1.0f)
+        {
+            tamp_slider.SetSliderColor(Color.red);
+        }
+        else
+        {
+            tamp_slider.SetSliderColor(Color.green);
+        }
+    }
 }

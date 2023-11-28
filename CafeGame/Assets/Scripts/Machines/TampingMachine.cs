@@ -113,7 +113,6 @@ public class TampingMachine : MonoBehaviour
         var filter_snap_point_position = filter_snap_point.position;
         var new_tamp_y = Mathf.Lerp(default_tamper_y, filter_snap_point_position.y, tamping_status);
         tamper.position = new Vector3(tamper_position.x, new_tamp_y, tamper_position.z);
-
         if (values.Item2 == false)
         {
             tamping_time = 0;
@@ -127,8 +126,8 @@ public class TampingMachine : MonoBehaviour
                 {
                     tamping_time = time_to_tamp;
                 }
-                var tamping_progress = tamping_time / time_to_tamp;
-                filter.SetTampStrength(tamping_progress);
+                var tamping_progress = Time.deltaTime / time_to_tamp;
+                filter.AddTampStrength(tamping_progress);
             }
         }
     }

@@ -437,6 +437,17 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
+--- !u!114 &198233942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5888893708048525742, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
+  m_PrefabInstance: {fileID: 1736909348635917428}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ed940c3e2db0f448beb68bbccc15e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &237542609
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,8 +810,8 @@ MonoBehaviour:
   m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
+  m_StopNaN: 1
+  m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_AllowHDROutput: 1
@@ -2709,7 +2720,7 @@ Transform:
   m_GameObject: {fileID: 1919845555}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5.62, y: 4.79, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3097,9 +3108,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1578055208847774529, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.37045082
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578055208847774529, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.37045082
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578055208847774529, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.14768483
+      objectReference: {fileID: 0}
     - target: {fileID: 5170530379168923645, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
       propertyPath: m_Name
       value: Espresso Machine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6250067900730358745, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
+      propertyPath: pressure_gauge
+      value: 
+      objectReference: {fileID: 198233942}
+    - target: {fileID: 7114135029024232657, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f327771a1aed9bc4cb07788880862f11, type: 3}
+    - target: {fileID: 7114135029024232657, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8863990640224941966, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
       propertyPath: m_LocalPosition.x
