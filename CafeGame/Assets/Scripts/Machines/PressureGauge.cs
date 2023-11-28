@@ -48,7 +48,6 @@ public class PressureGauge : MonoBehaviour
         var end_angle = Mathf.Lerp(min_angle, max_angle, value);
         // calculate degrees difference between current angle and end angle
         var angle_difference = Mathf.Abs(current_angle - end_angle);
-        Debug.Log(current_angle + " " + end_angle);
         var lerp_time = 0.0f;
         while (true)
         {
