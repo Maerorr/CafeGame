@@ -3120,6 +3120,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14768483
       objectReference: {fileID: 0}
+    - target: {fileID: 1578055208847774529, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.13
+      objectReference: {fileID: 0}
     - target: {fileID: 5170530379168923645, guid: 49be9ceeae85eb347b706b018be3109f, type: 3}
       propertyPath: m_Name
       value: Espresso Machine

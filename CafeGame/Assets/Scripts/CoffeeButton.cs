@@ -1,42 +1,61 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 
-public class CoffeeButton : MonoBehaviour
-{   
-    SpriteRenderer spriteRenderer;
+public class CoffeeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+{
     Color pressedColor = new Color(0.1f, 0.9f, 0.1f, 1.0f);
     Color hoverColor = new Color(0.7f, 0.9f, 0.7f, 1.0f);
     Color defaultColor = Color.white;
+
+    private Light2D light;
     
-    TestCoffeeMechanics testCoffeeMechanics;
+    [SerializeField]
+    UnityEvent OnClick;
     
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        testCoffeeMechanics = GameObject.Find("CoffeeMachine").GetComponent<TestCoffeeMechanics>();
-    }
-    
-    void OnMouseDown(){
-        spriteRenderer.color = pressedColor;
-        testCoffeeMechanics.StartPouring();
-    }
-    
-    void OnMouseUp(){
-        spriteRenderer.color = hoverColor;
-        testCoffeeMechanics.StopPouring();
+        light = GetComponentInChildren<Light2D>();
+        if (light != null)
+        {
+            light.intensity = 0.0f;
+            light.color = defaultColor;
+        }
     }
 
-    private void OnMouseEnter()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        spriteRenderer.color = hoverColor;
+        if (light != null)
+        {
+            light.intensity = 1.0f;
+            light.color = hoverColor;
+        }
     }
-    
-    private void OnMouseExit()
+
+    public void OnPointerExit(PointerEventData eventData)
     {
-        spriteRenderer.color = defaultColor;
+        if (light != null)
+        {
+            light.color = defaultColor;
+            light.intensity = 0.0f;
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (light != null)
+        {   
+            light.color = pressedColor;
+        }
+        OnClick.Invoke();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (light != null)
+        {   
+            light.color = hoverColor;
+        }
     }
 }
